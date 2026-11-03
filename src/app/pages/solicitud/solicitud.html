@@ -1,0 +1,74 @@
+<main class="pagina-solicitud">
+  <header class="encabezado-solicitud">
+    <a routerLink="/" class="volver">← Volver al inicio</a>
+
+    <div class="marca">
+      <strong>FAUNA</strong>
+      <span>Prototipo</span>
+    </div>
+  </header>
+
+  <section class="contenido-solicitud">
+    <p class="sobrelinea">Paso 1 · Datos del solicitante</p>
+    <h1>Iniciar solicitud</h1>
+    <p>Completá estos datos para avanzar con la solicitud de licencia.</p>
+
+    <p class="nota-prototipo">
+      Borrador de demostración: los campos y las validaciones son provisorios hasta confirmar el
+      formulario oficial.
+    </p>
+
+    <form [formGroup]="formulario" (ngSubmit)="continuar()" novalidate>
+      <div class="campo">
+        <label for="nombreCompleto">Nombre y apellido</label>
+        <input
+          id="nombreCompleto"
+          type="text"
+          formControlName="nombreCompleto"
+          autocomplete="name"
+        />
+
+        @if (
+          formulario.controls.nombreCompleto.touched &&
+          formulario.controls.nombreCompleto.hasError('required')
+        ) {
+          <small>Completá el nombre y apellido.</small>
+        }
+      </div>
+
+      <div class="campo">
+        <label for="dni">DNI</label>
+        <input id="dni" type="text" inputmode="numeric" formControlName="dni" />
+
+        @if (formulario.controls.dni.touched && formulario.controls.dni.hasError('required')) {
+          <small>Completá el DNI.</small>
+        }
+      </div>
+
+      <div class="campo">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" type="email" formControlName="correo" autocomplete="email" />
+
+        @if (
+          formulario.controls.correo.touched && formulario.controls.correo.hasError('required')
+        ) {
+          <small>Completá el correo electrónico.</small>
+        }
+
+        @if (formulario.controls.correo.touched && formulario.controls.correo.hasError('email')) {
+          <small>Ingresá un correo electrónico válido.</small>
+        }
+      </div>
+
+      <button type="submit">Validar datos de demostración</button>
+    </form>
+
+    @if (enviado) {
+      <p role="status">
+        Los datos de demostración son válidos. Todavía no se envían a ningún sistema.
+      </p>
+    }
+  </section>
+
+  <footer>Prototipo de práctica profesionalizante</footer>
+</main>
