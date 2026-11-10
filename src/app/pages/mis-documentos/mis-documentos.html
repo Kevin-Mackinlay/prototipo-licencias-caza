@@ -1,0 +1,161 @@
+<main class="pagina">
+  <header class="encabezado">
+    <a routerLink="/solicitud" class="volver">← Volver a solicitud</a>
+
+    <div class="marca">
+      <strong>FAUNA</strong>
+      <span>Prototipo</span>
+    </div>
+  </header>
+
+  <section class="contenido-documentos">
+    <p class="sobrelinea">Sistema de trámites</p>
+    <h1>Mis documentos</h1>
+
+    <p class="descripcion">
+      Completá los datos y adjuntá la documentación requerida para tu solicitud.
+    </p>
+
+    <p class="aviso">
+      Prototipo de demostración. Los requisitos y campos se confirmarán con Fauna.
+    </p>
+
+    <section class="documento">
+      <div class="documento-encabezado">
+        <div>
+          <h2>DNI</h2>
+          <p>Ingresá tu número de documento y adjuntá una copia.</p>
+        </div>
+        <span class="estado">Pendiente de carga</span>
+      </div>
+
+      <label for="numeroDni">Número de DNI</label>
+      <input
+        id="numeroDni"
+        type="text"
+        placeholder="Ingresá tu DNI"
+      />
+
+      <div class="selector-archivo">
+        <label class="boton-archivo">
+          Seleccionar archivo
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            (change)="actualizarNombreArchivo('dni', $event)"
+          />
+        </label>
+
+        <span class="nombre-archivo">
+          {{ nombresArchivos.dni || 'Ningún archivo seleccionado' }}
+        </span>
+      </div>
+    </section>
+
+    <section class="documento">
+      <div class="documento-encabezado">
+        <div>
+          <h2>Formulario C-01 SFS</h2>
+          <p>Completá los datos y adjuntá la copia correspondiente.</p>
+        </div>
+        <span class="estado">Pendiente de carga</span>
+      </div>
+
+      <label for="establecimiento">Nombre del establecimiento</label>
+      <input id="establecimiento" type="text" />
+
+      <label for="localidad">Localidad</label>
+      <input id="localidad" type="text" />
+
+      <label for="nomenclatura">Nomenclatura catastral</label>
+      <input id="nomenclatura" type="text" />
+
+      <div class="selector-archivo">
+        <label class="boton-archivo">
+          Seleccionar archivo
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            (change)="actualizarNombreArchivo('formularioC01', $event)"
+          />
+        </label>
+
+        <span class="nombre-archivo">
+          {{ nombresArchivos.formularioC01 || 'Ningún archivo seleccionado' }}
+        </span>
+      </div>
+    </section>
+
+    <section class="documento">
+      <div class="documento-encabezado">
+        <div>
+          <h2>Antecedentes penales</h2>
+          <p>Indicá la fecha de emisión que figura en el certificado.</p>
+        </div>
+        <span class="estado">Pendiente de carga</span>
+      </div>
+
+      <label for="fechaEmision">Fecha de emisión</label>
+      <p-datepicker
+        inputId="fechaEmision"
+        dateFormat="dd/mm/yy"
+        [showIcon]="true"
+        iconDisplay="input"
+        [maxDate]="fechaMaxima"
+        placeholder="Seleccioná la fecha"
+      />
+
+      <div class="selector-archivo">
+        <label class="boton-archivo">
+          Seleccionar archivo
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            (change)="actualizarNombreArchivo('antecedentes', $event)"
+          />
+        </label>
+
+        <span class="nombre-archivo">
+          {{ nombresArchivos.antecedentes || 'Ningún archivo seleccionado' }}
+        </span>
+      </div>
+    </section>
+
+    <section class="documento">
+      <div class="documento-encabezado">
+        <div>
+          <h2>Comprobante de pago</h2>
+          <p>Adjuntá el comprobante cuando corresponda.</p>
+        </div>
+        <span class="estado">Pendiente de carga</span>
+      </div>
+
+      <div class="selector-archivo">
+        <label class="boton-archivo">
+          Seleccionar archivo
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            (change)="actualizarNombreArchivo('comprobantePago', $event)"
+          />
+        </label>
+
+        <span class="nombre-archivo">
+          {{ nombresArchivos.comprobantePago || 'Ningún archivo seleccionado' }}
+        </span>
+      </div>
+    </section>
+
+    <div class="acciones">
+      <button type="button" class="boton-secundario">
+        Grabar borrador
+      </button>
+
+      <button type="button" class="boton-principal" disabled>
+        Enviar a revisión
+      </button>
+    </div>
+  </section>
+
+  <footer>Prototipo de práctica profesionalizante</footer>
+</main>
