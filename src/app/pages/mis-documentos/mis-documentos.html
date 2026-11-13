@@ -16,17 +16,15 @@
       Completá los datos y adjuntá la documentación requerida para tu solicitud.
     </p>
 
-    <p class="aviso">
-      Prototipo de demostración. Los requisitos y campos se confirmarán con Fauna.
-    </p>
-
     <section class="documento">
       <div class="documento-encabezado">
         <div>
           <h2>DNI</h2>
           <p>Ingresá tu número de documento y adjuntá una copia.</p>
         </div>
-        <span class="estado">Pendiente de carga</span>
+        <span class="estado">
+          {{ etiquetaEstado(estadosDocumentos.dni) }}
+        </span>
       </div>
 
       <label for="numeroDni">Número de DNI</label>
@@ -58,7 +56,9 @@
           <h2>Formulario C-01 SFS</h2>
           <p>Completá los datos y adjuntá la copia correspondiente.</p>
         </div>
-        <span class="estado">Pendiente de carga</span>
+        <span class="estado">
+          {{ etiquetaEstado(estadosDocumentos.formularioC01) }}
+        </span>
       </div>
 
       <label for="establecimiento">Nombre del establecimiento</label>
@@ -92,7 +92,9 @@
           <h2>Antecedentes penales</h2>
           <p>Indicá la fecha de emisión que figura en el certificado.</p>
         </div>
-        <span class="estado">Pendiente de carga</span>
+        <span class="estado">
+          {{ etiquetaEstado(estadosDocumentos.antecedentes) }}
+        </span>
       </div>
 
       <label for="fechaEmision">Fecha de emisión</label>
@@ -127,7 +129,9 @@
           <h2>Comprobante de pago</h2>
           <p>Adjuntá el comprobante cuando corresponda.</p>
         </div>
-        <span class="estado">Pendiente de carga</span>
+        <span class="estado">
+          {{ etiquetaEstado(estadosDocumentos.comprobantePago) }}
+        </span>
       </div>
 
       <div class="selector-archivo">

@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePickerModule } from 'primeng/datepicker';
-
-
-type TipoDocumento = 'dni' | 'formularioC01' | 'antecedentes' | 'comprobantePago';
+import type { EstadoDocumento,TipoDocumento } from '../../models/estados-tramites';
 
 @Component({
   selector: 'app-mis-documentos',
@@ -20,6 +18,12 @@ export class MisDocumentos {
     antecedentes: '',
     comprobantePago: '',
   };
+  protected estadosDocumentos: Record<TipoDocumento, EstadoDocumento> = {
+    dni: 'pendienteCarga',
+    formularioC01: 'pendienteCarga',
+    antecedentes: 'pendienteCarga',
+    comprobantePago: 'pendienteCarga',
+  };
 
   protected actualizarNombreArchivo(tipo: TipoDocumento, event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -28,5 +32,16 @@ export class MisDocumentos {
     if (archivo) {
       this.nombresArchivos[tipo] = archivo.name;
     }
+  }
+  protected etiquetaEstado(estado: EstadoDocumento): string {
+    const etiquetas: Record<EstadoDocumento, string> = {
+      pendienteCarga: 'Pendiente de carga',
+      pendienteRevision: 'Pendiente de revisión',
+      aprobado: 'Aprobado',
+      observado: 'Observado',
+      rechazado: 'Rechazado',
+    };
+
+    return etiquetas[estado];
   }
 }
