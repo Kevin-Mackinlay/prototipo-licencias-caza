@@ -285,3 +285,19 @@ footer {
     }
   }
 }
+
+.mensaje-error {
+  margin: 6px 0 12px;
+  color: #b42318;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.mensaje-exito {
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #e7f0e8;
+  color: #294b34;
+  line-height: 1.5;
+}

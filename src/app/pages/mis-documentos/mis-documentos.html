@@ -16,149 +16,217 @@
       Completá los datos y adjuntá la documentación requerida para tu solicitud.
     </p>
 
-    <section class="documento">
-      <div class="documento-encabezado">
-        <div>
-          <h2>DNI</h2>
-          <p>Ingresá tu número de documento y adjuntá una copia.</p>
+    <form [formGroup]="formulario" novalidate>
+      <section class="documento">
+        <div class="documento-encabezado">
+          <div>
+            <h2>DNI</h2>
+            <p>Ingresá tu número de documento y adjuntá una copia.</p>
+          </div>
+          <span class="estado">
+            {{ etiquetaEstado(estadosDocumentos.dni) }}
+          </span>
         </div>
-        <span class="estado">
-          {{ etiquetaEstado(estadosDocumentos.dni) }}
-        </span>
-      </div>
 
-      <label for="numeroDni">Número de DNI</label>
-      <input
-        id="numeroDni"
-        type="text"
-        placeholder="Ingresá tu DNI"
-      />
+        <label for="numeroDni">Número de DNI</label>
+        <input
+          id="numeroDni"
+          type="text"
+          placeholder="Ingresá tu DNI"
+          formControlName="numeroDni"
+        />
 
-      <div class="selector-archivo">
-        <label class="boton-archivo">
-          Seleccionar archivo
-          <input
-            type="file"
-            accept=".pdf,image/*"
-            (change)="actualizarNombreArchivo('dni', $event)"
-          />
-        </label>
+        @if (
+          formulario.controls.numeroDni.touched &&
+          formulario.controls.numeroDni.hasError('required')
+        ) {
+          <p class="mensaje-error">Ingresá tu número de DNI.</p>
+        }
 
-        <span class="nombre-archivo">
-          {{ nombresArchivos.dni || 'Ningún archivo seleccionado' }}
-        </span>
-      </div>
-    </section>
+        <div class="selector-archivo">
+          <label class="boton-archivo">
+            Seleccionar archivo
+            <input
+              type="file"
+              accept=".pdf,image/*"
+              (change)="actualizarNombreArchivo('dni', $event)"
+            />
+          </label>
 
-    <section class="documento">
-      <div class="documento-encabezado">
-        <div>
-          <h2>Formulario C-01 SFS</h2>
-          <p>Completá los datos y adjuntá la copia correspondiente.</p>
+          <span class="nombre-archivo">
+            {{ nombresArchivos.dni || 'Ningún archivo seleccionado' }}
+          </span>
         </div>
-        <span class="estado">
-          {{ etiquetaEstado(estadosDocumentos.formularioC01) }}
-        </span>
-      </div>
+      </section>
 
-      <label for="establecimiento">Nombre del establecimiento</label>
-      <input id="establecimiento" type="text" />
-
-      <label for="localidad">Localidad</label>
-      <input id="localidad" type="text" />
-
-      <label for="nomenclatura">Nomenclatura catastral</label>
-      <input id="nomenclatura" type="text" />
-
-      <div class="selector-archivo">
-        <label class="boton-archivo">
-          Seleccionar archivo
-          <input
-            type="file"
-            accept=".pdf,image/*"
-            (change)="actualizarNombreArchivo('formularioC01', $event)"
-          />
-        </label>
-
-        <span class="nombre-archivo">
-          {{ nombresArchivos.formularioC01 || 'Ningún archivo seleccionado' }}
-        </span>
-      </div>
-    </section>
-
-    <section class="documento">
-      <div class="documento-encabezado">
-        <div>
-          <h2>Antecedentes penales</h2>
-          <p>Indicá la fecha de emisión que figura en el certificado.</p>
+      <section class="documento">
+        <div class="documento-encabezado">
+          <div>
+            <h2>Formulario C-01 SFS</h2>
+            <p>Completá los datos y adjuntá la copia correspondiente.</p>
+          </div>
+          <span class="estado">
+            {{ etiquetaEstado(estadosDocumentos.formularioC01) }}
+          </span>
         </div>
-        <span class="estado">
-          {{ etiquetaEstado(estadosDocumentos.antecedentes) }}
-        </span>
-      </div>
 
-      <label for="fechaEmision">Fecha de emisión</label>
-      <p-datepicker
-        inputId="fechaEmision"
-        dateFormat="dd/mm/yy"
-        [showIcon]="true"
-        iconDisplay="input"
-        [maxDate]="fechaMaxima"
-        placeholder="Seleccioná la fecha"
-      />
+        <label for="establecimiento">Nombre del establecimiento</label>
+        <input
+          id="establecimiento"
+          type="text"
+          formControlName="establecimiento"
+        />
 
-      <div class="selector-archivo">
-        <label class="boton-archivo">
-          Seleccionar archivo
-          <input
-            type="file"
-            accept=".pdf,image/*"
-            (change)="actualizarNombreArchivo('antecedentes', $event)"
-          />
-        </label>
+        @if (
+          formulario.controls.establecimiento.touched &&
+          formulario.controls.establecimiento.hasError('required')
+        ) {
+          <p class="mensaje-error">
+            Ingresá el nombre del establecimiento.
+          </p>
+        }
 
-        <span class="nombre-archivo">
-          {{ nombresArchivos.antecedentes || 'Ningún archivo seleccionado' }}
-        </span>
-      </div>
-    </section>
+        <label for="localidad">Localidad</label>
+        <input
+          id="localidad"
+          type="text"
+          formControlName="localidad"
+        />
 
-    <section class="documento">
-      <div class="documento-encabezado">
-        <div>
-          <h2>Comprobante de pago</h2>
-          <p>Adjuntá el comprobante cuando corresponda.</p>
+        @if (
+          formulario.controls.localidad.touched &&
+          formulario.controls.localidad.hasError('required')
+        ) {
+          <p class="mensaje-error">Ingresá la localidad.</p>
+        }
+
+        <label for="nomenclatura">Nomenclatura catastral</label>
+        <input
+          id="nomenclatura"
+          type="text"
+          formControlName="nomenclatura"
+        />
+
+        @if (
+          formulario.controls.nomenclatura.touched &&
+          formulario.controls.nomenclatura.hasError('required')
+        ) {
+          <p class="mensaje-error">
+            Ingresá la nomenclatura catastral.
+          </p>
+        }
+
+        <div class="selector-archivo">
+          <label class="boton-archivo">
+            Seleccionar archivo
+            <input
+              type="file"
+              accept=".pdf,image/*"
+              (change)="actualizarNombreArchivo('formularioC01', $event)"
+            />
+          </label>
+
+          <span class="nombre-archivo">
+            {{ nombresArchivos.formularioC01 || 'Ningún archivo seleccionado' }}
+          </span>
         </div>
-        <span class="estado">
-          {{ etiquetaEstado(estadosDocumentos.comprobantePago) }}
-        </span>
+      </section>
+
+      <section class="documento">
+        <div class="documento-encabezado">
+          <div>
+            <h2>Antecedentes penales</h2>
+            <p>Indicá la fecha de emisión que figura en el certificado.</p>
+          </div>
+          <span class="estado">
+            {{ etiquetaEstado(estadosDocumentos.antecedentes) }}
+          </span>
+        </div>
+
+        <label for="fechaEmision">Fecha de emisión</label>
+        <p-datepicker
+          inputId="fechaEmision"
+          formControlName="fechaEmision"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          iconDisplay="input"
+          [maxDate]="fechaMaxima"
+          placeholder="Seleccioná la fecha"
+        />
+
+        @if (
+          formulario.controls.fechaEmision.touched &&
+          formulario.controls.fechaEmision.hasError('required')
+        ) {
+          <p class="mensaje-error">Seleccioná la fecha de emisión.</p>
+        }
+
+        <div class="selector-archivo">
+          <label class="boton-archivo">
+            Seleccionar archivo
+            <input
+              type="file"
+              accept=".pdf,image/*"
+              (change)="actualizarNombreArchivo('antecedentes', $event)"
+            />
+          </label>
+
+          <span class="nombre-archivo">
+            {{ nombresArchivos.antecedentes || 'Ningún archivo seleccionado' }}
+          </span>
+        </div>
+      </section>
+
+      <section class="documento">
+        <div class="documento-encabezado">
+          <div>
+            <h2>Comprobante de pago</h2>
+            <p>Adjuntá el comprobante cuando corresponda.</p>
+          </div>
+          <span class="estado">
+            {{ etiquetaEstado(estadosDocumentos.comprobantePago) }}
+          </span>
+        </div>
+
+        <div class="selector-archivo">
+          <label class="boton-archivo">
+            Seleccionar archivo
+            <input
+              type="file"
+              accept=".pdf,image/*"
+              (change)="actualizarNombreArchivo('comprobantePago', $event)"
+            />
+          </label>
+
+          <span class="nombre-archivo">
+            {{ nombresArchivos.comprobantePago || 'Ningún archivo seleccionado' }}
+          </span>
+        </div>
+      </section>
+
+      <div class="acciones">
+        <button
+          type="button"
+          class="boton-secundario"
+          (click)="guardarBorrador()"
+        >
+          Grabar borrador
+        </button>
+
+        <button
+          type="button"
+          class="boton-principal"
+          [disabled]="!puedeEnviarRevision"
+          (click)="enviarARevision()"
+        >
+          Enviar a revisión
+        </button>
       </div>
 
-      <div class="selector-archivo">
-        <label class="boton-archivo">
-          Seleccionar archivo
-          <input
-            type="file"
-            accept=".pdf,image/*"
-            (change)="actualizarNombreArchivo('comprobantePago', $event)"
-          />
-        </label>
-
-        <span class="nombre-archivo">
-          {{ nombresArchivos.comprobantePago || 'Ningún archivo seleccionado' }}
-        </span>
-      </div>
-    </section>
-
-    <div class="acciones">
-      <button type="button" class="boton-secundario">
-        Grabar borrador
-      </button>
-
-      <button type="button" class="boton-principal" disabled>
-        Enviar a revisión
-      </button>
-    </div>
+      @if (mensajeEnvio) {
+        <p class="mensaje-exito" role="status">{{ mensajeEnvio }}</p>
+      }
+    </form>
   </section>
 
   <footer>Prototipo de práctica profesionalizante</footer>
