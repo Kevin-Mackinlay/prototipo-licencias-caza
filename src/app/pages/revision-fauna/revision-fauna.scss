@@ -1,0 +1,88 @@
+.pagina {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.volver {
+  color: #426b19;
+  text-decoration: none;
+}
+
+.encabezado {
+  margin: 2rem 0;
+}
+
+.etiqueta {
+  color: #426b19;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+}
+
+.aclaracion {
+  color: #666;
+}
+
+.documentos {
+  display: grid;
+  gap: 1rem;
+}
+
+.documento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #d9e2d2;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.documento h2 {
+  margin-top: 0;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+button {
+  padding: 0.65rem 1rem;
+  border: 0;
+  border-radius: 8px;
+  background: #426b19;
+  color: #fff;
+  cursor: pointer;
+}
+
+button.secundario {
+  background: #8a6710;
+}
+
+button.rechazar {
+  background: #a12d2d;
+}
+
+button.finalizar {
+  margin-top: 1.5rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aviso,
+.mensaje {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f1f5ed;
+}

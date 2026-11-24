@@ -2,15 +2,23 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
+import { Store } from '@ngrx/store';
+
 import type {
   EstadoDocumento,
   EstadoSolicitud,
   TipoDocumento,
 } from '../../models/estados-tramites';
+import type { SolicitudState } from '../../store/solicitud/solicitud.reducer';
 import {
-  puedeCambiarEstadoDocumento,
-  puedeCambiarEstadoSolicitud,
-} from '../../models/maquina-estados';
+  archivoSeleccionado,
+  estadoDocumentoActualizado,
+  estadoSolicitudActualizado,
+} from '../../store/solicitud/solicitud.actions';
+
+interface AppState {
+  solicitud: SolicitudState;
+}
 
 @Component({
   selector: 'app-mis-documentos',
@@ -20,8 +28,13 @@ import {
 })
 export class MisDocumentos {
   private readonly fb = inject(FormBuilder);
+  private readonly store = inject(Store) as Store<AppState>;
 
   protected readonly fechaMaxima = new Date();
+
+  protected readonly solicitudActual = this.store.selectSignal(
+    (state) => state.solicitud.solicitudActual,
+  );
 
   protected readonly formulario = this.fb.group({
     numeroDni: ['', Validators.required],
@@ -31,22 +44,36 @@ export class MisDocumentos {
     fechaEmision: [null as Date | null, Validators.required],
   });
 
-  protected nombresArchivos: Record<TipoDocumento, string> = {
-    dni: '',
-    formularioC01: '',
-    antecedentes: '',
-    comprobantePago: '',
-  };
-
-  protected estadosDocumentos: Record<TipoDocumento, EstadoDocumento> = {
-    dni: 'pendienteCarga',
-    formularioC01: 'pendienteCarga',
-    antecedentes: 'pendienteCarga',
-    comprobantePago: 'pendienteCarga',
-  };
-
-  protected estadoSolicitud: EstadoSolicitud = 'presentada';
   protected mensajeEnvio = '';
+
+  protected get nombresArchivos(): Record<TipoDocumento, string> {
+    const documentos = this.solicitudActual().documentos;
+
+    return {
+      dni: documentos.find((documento) => documento.tipo === 'dni')?.nombreArchivo ?? '',
+      formularioC01:
+        documentos.find((documento) => documento.tipo === 'formularioC01')?.nombreArchivo ?? '',
+      antecedentes:
+        documentos.find((documento) => documento.tipo === 'antecedentes')?.nombreArchivo ?? '',
+      comprobantePago:
+        documentos.find((documento) => documento.tipo === 'comprobantePago')?.nombreArchivo ?? '',
+    };
+  }
+
+  protected get estadosDocumentos(): Record<TipoDocumento, EstadoDocumento> {
+    const documentos = this.solicitudActual().documentos;
+
+    return {
+      dni: documentos.find((documento) => documento.tipo === 'dni')!.estado,
+      formularioC01: documentos.find((documento) => documento.tipo === 'formularioC01')!.estado,
+      antecedentes: documentos.find((documento) => documento.tipo === 'antecedentes')!.estado,
+      comprobantePago: documentos.find((documento) => documento.tipo === 'comprobantePago')!.estado,
+    };
+  }
+
+  protected get estadoSolicitud(): EstadoSolicitud {
+    return this.solicitudActual().estado;
+  }
 
   constructor() {
     this.cargarBorrador();
@@ -70,7 +97,12 @@ export class MisDocumentos {
     const archivo = input.files?.[0];
 
     if (archivo) {
-      this.nombresArchivos[tipo] = archivo.name;
+      this.store.dispatch(
+        archivoSeleccionado({
+          tipo,
+          nombreArchivo: archivo.name,
+        }),
+      );
     }
   }
 
@@ -145,31 +177,20 @@ export class MisDocumentos {
       return;
     }
 
-    if (this.estadoSolicitud !== 'completa') {
-      if (!puedeCambiarEstadoSolicitud(this.estadoSolicitud, 'completa')) {
-        return;
-      }
+    this.store.dispatch(estadoSolicitudActualizado({ estado: 'completa' }));
+    this.store.dispatch(estadoSolicitudActualizado({ estado: 'enRevision' }));
 
-      this.estadoSolicitud = 'completa';
-    }
-
-    if (!puedeCambiarEstadoSolicitud(this.estadoSolicitud, 'enRevision')) {
-      return;
-    }
-
-    this.estadoSolicitud = 'enRevision';
-
-    const tiposDocumento = Object.keys(this.nombresArchivos) as TipoDocumento[];
+    const nombresArchivos = this.nombresArchivos;
+    const tiposDocumento = Object.keys(nombresArchivos) as TipoDocumento[];
 
     for (const tipo of tiposDocumento) {
-      const tieneArchivo = this.nombresArchivos[tipo] !== '';
-      const puedePasarARevision = puedeCambiarEstadoDocumento(
-        this.estadosDocumentos[tipo],
-        'pendienteRevision',
-      );
-
-      if (tieneArchivo && puedePasarARevision) {
-        this.estadosDocumentos[tipo] = 'pendienteRevision';
+      if (nombresArchivos[tipo] !== '') {
+        this.store.dispatch(
+          estadoDocumentoActualizado({
+            tipo,
+            estado: 'pendienteRevision',
+          }),
+        );
       }
     }
 

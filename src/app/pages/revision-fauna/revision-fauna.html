@@ -1,0 +1,91 @@
+<main class="pagina">
+  <a routerLink="/mis-documentos" class="volver">Volver a Mis documentos</a>
+
+  <header class="encabezado">
+    <p class="etiqueta">FAUNA · Prototipo</p>
+    <h1>Revisión de documentos</h1>
+    <p>
+      Estado de la solicitud:
+      <strong>{{ etiquetaEstadoSolicitud(solicitudActual().estado) }}</strong>
+    </p>
+    <p class="aclaracion">Esta revisión es simulada. Los archivos no se envían a un servidor.</p>
+  </header>
+
+  @if (solicitudActual().estado === 'enRevision') {
+    <section class="documentos">
+      @for (documento of solicitudActual().documentos; track documento.tipo) {
+        <article class="documento">
+          <div>
+            <h2>{{ etiquetaTipoDocumento(documento.tipo) }}</h2>
+            <p>
+              Archivo:
+              <strong>{{ documento.nombreArchivo || 'Nombre no disponible' }}</strong>
+            </p>
+            <p>
+              Estado:
+              <strong>{{ etiquetaEstadoDocumento(documento.estado) }}</strong>
+            </p>
+            @if (documento.observacion) {
+              <p>Observación: {{ documento.observacion }}</p>
+            }
+          </div>
+
+          @if (documento.estado === 'pendienteRevision') {
+            <div class="acciones">
+              <button type="button" (click)="cambiarEstadoDocumento(documento.tipo, 'aprobado')">
+                Aprobar
+              </button>
+              <button
+                type="button"
+                class="secundario"
+                (click)="cambiarEstadoDocumento(documento.tipo, 'observado')"
+              >
+                Observar
+              </button>
+              <button
+                type="button"
+                class="rechazar"
+                (click)="cambiarEstadoDocumento(documento.tipo, 'rechazado')"
+              >
+                Rechazar
+              </button>
+            </div>
+          }
+        </article>
+      }
+    </section>
+
+    <button
+      type="button"
+      class="finalizar"
+      [disabled]="!puedeFinalizarRevision()"
+      (click)="finalizarRevision()"
+    >
+      Finalizar revisión
+    </button>
+  } @else if (
+    solicitudActual().estado === 'presentada' || solicitudActual().estado === 'completa'
+  ) {
+    <section class="aviso">
+      No hay una solicitud en revisión. Primero enviá una solicitud desde Mis documentos.
+    </section>
+  } @else {
+    <section class="aviso">
+      @if (solicitudActual().estado === 'aprobada') {
+        La solicitud ya fue aprobada.
+      } @else if (solicitudActual().estado === 'emitida') {
+        La licencia ya fue emitida.
+      } @else if (solicitudActual().estado === 'observada') {
+        La solicitud fue observada. Revisá los documentos desde Mis documentos.
+      } @else if (solicitudActual().estado === 'rechazada') {
+        La solicitud fue rechazada.
+      } @else {
+        La revisión ya finalizó.
+      }
+    </section>
+  }
+
+  @if (mensaje) {
+    <p class="mensaje" aria-live="polite">{{ mensaje }}</p>
+  }
+</main>
