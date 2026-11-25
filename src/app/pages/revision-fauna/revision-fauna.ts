@@ -11,6 +11,7 @@ import type { SolicitudState } from '../../store/solicitud/solicitud.reducer';
 import {
   estadoDocumentoActualizado,
   estadoSolicitudActualizado,
+  observacionDocumentoActualizada,
 } from '../../store/solicitud/solicitud.actions';
 
 interface AppState {
@@ -31,6 +32,7 @@ export class RevisionFauna {
   );
 
   protected mensaje = '';
+  protected motivosObservacion: Partial<Record<TipoDocumento, string>> = {};
 
   protected puedeFinalizarRevision(): boolean {
     const solicitud = this.solicitudActual();
@@ -51,7 +53,28 @@ export class RevisionFauna {
     );
   }
 
+  protected actualizarMotivoObservacion(tipo: TipoDocumento, event: Event): void {
+    const textarea = event.target as HTMLTextAreaElement;
+    this.motivosObservacion[tipo] = textarea.value;
+    this.mensaje = '';
+  }
+
   protected cambiarEstadoDocumento(tipo: TipoDocumento, estado: EstadoDocumento): void {
+    if (estado === 'observado') {
+      const observacionExistente =
+        this.solicitudActual().documentos.find((documento) => documento.tipo === tipo)
+          ?.observacion ?? '';
+
+      const observacion = (this.motivosObservacion[tipo] ?? observacionExistente).trim();
+
+      if (!observacion) {
+        this.mensaje = 'Escribí el motivo de la observación antes de marcar el documento.';
+        return;
+      }
+
+      this.store.dispatch(observacionDocumentoActualizada({ tipo, observacion }));
+    }
+
     this.store.dispatch(estadoDocumentoActualizado({ tipo, estado }));
     this.mensaje = '';
   }

@@ -25,6 +25,19 @@
               Estado:
               <strong>{{ etiquetaEstadoDocumento(documento.estado) }}</strong>
             </p>
+
+            @if (documento.estado === 'pendienteRevision') {
+              <label class="campo-observacion">
+                <span>Motivo (obligatorio si elegís Observar)</span>
+                <textarea
+                  rows="3"
+                  [value]="documento.observacion ?? ''"
+                  (input)="actualizarMotivoObservacion(documento.tipo, $event)"
+                  placeholder="Describí qué debe corregirse"
+                ></textarea>
+              </label>
+            }
+
             @if (documento.observacion) {
               <p>Observación: {{ documento.observacion }}</p>
             }

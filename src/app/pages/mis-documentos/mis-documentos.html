@@ -28,6 +28,13 @@
           </span>
         </div>
 
+        @if (observacionesDocumentos.dni) {
+          <p class="motivo-observacion">
+            <strong>Observación de Fauna:</strong> {{ observacionesDocumentos.dni }}
+            <span>Adjuntá una copia corregida y volvé a enviar.</span>
+          </p>
+        }
+
         <label for="numeroDni">Número de DNI</label>
         <input
           id="numeroDni"
@@ -69,6 +76,13 @@
             {{ etiquetaEstado(estadosDocumentos.formularioC01) }}
           </span>
         </div>
+
+        @if (observacionesDocumentos.formularioC01) {
+          <p class="motivo-observacion">
+            <strong>Observación de Fauna:</strong> {{ observacionesDocumentos.formularioC01 }}
+            <span>Adjuntá una copia corregida y volvé a enviar.</span>
+          </p>
+        }
 
         <label for="establecimiento">Nombre del establecimiento</label>
         <input
@@ -143,6 +157,13 @@
           </span>
         </div>
 
+        @if (observacionesDocumentos.antecedentes) {
+          <p class="motivo-observacion">
+            <strong>Observación de Fauna:</strong> {{ observacionesDocumentos.antecedentes }}
+            <span>Adjuntá una copia corregida y volvé a enviar.</span>
+          </p>
+        }
+
         <label for="fechaEmision">Fecha de emisión</label>
         <p-datepicker
           inputId="fechaEmision"
@@ -187,6 +208,13 @@
             {{ etiquetaEstado(estadosDocumentos.comprobantePago) }}
           </span>
         </div>
+
+        @if (observacionesDocumentos.comprobantePago) {
+          <p class="motivo-observacion">
+            <strong>Observación de Fauna:</strong> {{ observacionesDocumentos.comprobantePago }}
+            <span>Adjuntá una copia corregida y volvé a enviar.</span>
+          </p>
+        }
 
         <div class="selector-archivo">
           <label class="boton-archivo">

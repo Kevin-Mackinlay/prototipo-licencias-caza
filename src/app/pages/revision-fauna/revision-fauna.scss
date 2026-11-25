@@ -86,3 +86,20 @@ button:disabled {
   border-radius: 8px;
   background: #f1f5ed;
 }
+
+.campo-observacion {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.campo-observacion textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 80px;
+  padding: 0.65rem;
+  border: 1px solid #cfd8c3;
+  border-radius: 8px;
+  font: inherit;
+  resize: vertical;
+}

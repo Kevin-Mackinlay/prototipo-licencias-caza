@@ -75,6 +75,20 @@ export class MisDocumentos {
     return this.solicitudActual().estado;
   }
 
+  protected get observacionesDocumentos(): Record<TipoDocumento, string> {
+    const documentos = this.solicitudActual().documentos;
+
+    return {
+      dni: documentos.find((documento) => documento.tipo === 'dni')?.observacion ?? '',
+      formularioC01:
+        documentos.find((documento) => documento.tipo === 'formularioC01')?.observacion ?? '',
+      antecedentes:
+        documentos.find((documento) => documento.tipo === 'antecedentes')?.observacion ?? '',
+      comprobantePago:
+        documentos.find((documento) => documento.tipo === 'comprobantePago')?.observacion ?? '',
+    };
+  }
+
   constructor() {
     this.cargarBorrador();
   }
